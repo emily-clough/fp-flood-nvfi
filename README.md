@@ -61,10 +61,10 @@ Flood risks for river and sea flooding are shared on data.gov.uk, through the [F
 Flood risks for surface water are published on data.gov.uk, through the [Risk of Flooding from Surface Water (RoFSW)](https://www.data.gov.uk/dataset/0d6fa1f4-0c82-4c91-8667-a549e8e3ca2d/risk-of-flooding-from-surface-water3). You can download the geojson from [here](https://environment.data.gov.uk/explore/b5aaa28d-6eb9-460e-8d6f-43caa71fbe0e?download=true), but it will not allow download of the whole country. I'll need to create a shapefile for the six listed council areas (or perhaps just those in England?) before attempting this again.
 
 
-#### Scotland
+##### Scotland
 
 Scotland has all flood risk data available on [SEPA's](https://www2.sepa.org.uk/flooddata/) website. This is all in .gdb data, which seems readily useable by geopandas.
 
 ### Flood history
 
-This [historic flood map](https://www.data.gov.uk/dataset/76292bec-7d8b-43e8-9c98-02734fd89c81/historic-flood-map1) by EA shows the outlines of the floods they know about.  
+This [historic flood map](https://www.data.gov.uk/dataset/76292bec-7d8b-43e8-9c98-02734fd89c81/historic-flood-map1) by EA shows the outlines of the floods they know about.  FP would like to know *when* the flood occurred.
