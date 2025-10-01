@@ -8,12 +8,12 @@ The project is inspired in part by the work of JRF, University of Manchester and
 
 While it would be fun and useful to try to reproduce that analysis on a UK-wide scale, the digital infrastructure for this scale of project is not available at this time. This project will focus on the following geographic areas:
 
--Leicester
--Hull
--Birmingham
--Dundee 
--Stirling 
--Alloa
+- Leicester
+- Hull
+- Birmingham
+- Dundee 
+- Stirling 
+- Alloa
 
 For these municipalities, the project will try to identify neighbourhoods and areas where people are highly vulnerable to the impacts of flooding and where those people have been flooded in the past or are likely to be flooded in the future. FP are hoping to use this analysis to focus who they speak to as part of their project with the National Lottery.
 
@@ -22,8 +22,8 @@ The analysis will be used by community organisers and campaigners, so it is part
 ## Available Data:
 
 The project examines two broad concepts:
--vulnerability to the impacts of flooding
--flood exposure
+- vulnerability to the impacts of flooding
+- flood exposure
 
 ### Vulnerability to flooding
 The measure of vulnerability to flooding is the Neighbourhood Flooding Vulnerability Index, developed by Sayer and Partners for the UK's Climate Change Committee. The NFVI:
@@ -31,11 +31,12 @@ The measure of vulnerability to flooding is the Neighbourhood Flooding Vulnerabi
 > considers the characteristics of people and the communities in which they live that would – if they were to be exposed to  a flood
 hazard – make them more or less likely to experience a negative welfare outcome.
 
-It is built using five different dimension of flood vulnerability. The measures are calculated using z-scores, so are relative rather than absolute measures. Scores below zero indicate a worse than average level of vulnerability to flooding.
+It is built using five different dimension of flood vulnerability. The measures are calculated using z-scores, so are relative rather than absolute measures. Scores below zero indicate a worse than average level of vulnerability to flooding. There are options to use the z-score relative to the country, or relative to the UK as a whole.
 
-The NFVI is measured at the [LSOA](https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-december-2021-boundaries-ew-bsc-v4-2/about) level.
+The NFVI is measured at the [2021 Lower layer Super Output Areas](https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-december-2021-boundaries-ew-bsc-v4-2/about) level in England, and [2011 Immediate Zone Boundaries](https://www.nrscotland.gov.uk/publications/2022-census-geography-products/) level in Scotland.
 
-The latest NFVI was calculated in 2025, and a thorough discussion of the elements is available on the [UK Climate Risk website](https://www.ukclimaterisk.org/wp-content/uploads/2025/07/Sayers-et-al-2025-Climate-Vulnerability-Indicators-1.pdf). The dataset was sourced from the {same place}(https://www.ukclimaterisk.org/wp-content/uploads/2024/08/Sayers-ClimateVulnerabilityIndicators_Neighbourhoods-06March2025-Submitted.xlsx).
+The latest NFVI was calculated in 2025 based on 2021 UK Census data (when available), and a thorough discussion of the elements is available on the [UK Climate Risk website](https://www.ukclimaterisk.org/wp-content/uploads/2025/07/Sayers-et-al-2025-Climate-Vulnerability-Indicators-1.pdf). The dataset was sourced from the [same place](https://www.ukclimaterisk.org/wp-content/uploads/2024/08/Sayers-ClimateVulnerabilityIndicators_Neighbourhoods-06March2025-Submitted.xlsx).
+
 
 ### Flood exposure
 
