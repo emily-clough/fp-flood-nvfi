@@ -31,6 +31,8 @@ The measure of vulnerability to flooding is the Neighbourhood Flooding Vulnerabi
 > considers the characteristics of people and the communities in which they live that would – if they were to be exposed to  a flood
 hazard – make them more or less likely to experience a negative welfare outcome.
 
+It is built using five different dimension of flood vulnerability. The measures are calculated using z-scores, so are relative rather than absolute measures. Scores below zero indicate a worse than average level of vulnerability to flooding.
+
 The NFVI is measured at the [LSOA](https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-december-2021-boundaries-ew-bsc-v4-2/about) level.
 
 The latest NFVI was calculated in 2025, and a thorough discussion of the elements is available on the [UK Climate Risk website](https://www.ukclimaterisk.org/wp-content/uploads/2025/07/Sayers-et-al-2025-Climate-Vulnerability-Indicators-1.pdf). The dataset was sourced from the {same place}(https://www.ukclimaterisk.org/wp-content/uploads/2024/08/Sayers-ClimateVulnerabilityIndicators_Neighbourhoods-06March2025-Submitted.xlsx).
