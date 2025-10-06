@@ -12,8 +12,7 @@ While it would be fun and useful to try to reproduce that analysis on a UK-wide 
 - Hull
 - Birmingham
 - Dundee 
-- Stirling 
-- Alloa
+- Glasgow
 
 For these council areas, the project will try to identify neighbourhoods and areas where people who are highly vulnerable to the impacts of flooding *and* have also been flooded in the past or are likely to be flooded in the future. FP are hoping to use this analysis to focus who they speak to as part of their project with the National Lottery.
 
@@ -28,8 +27,7 @@ The project examines two broad concepts:
 ### Vulnerability to flooding
 The measure of vulnerability to flooding is the Neighbourhood Flooding Vulnerability Index, developed by Sayer and Partners for the UK's Climate Change Committee. The NFVI:
 
-> considers the characteristics of people and the communities in which they live that would – if they were to be exposed to  a flood
-hazard – make them more or less likely to experience a negative welfare outcome.
+> considers the characteristics of people and the communities in which they live that would – if they were to be exposed to  a flood hazard – make them more or less likely to experience a negative welfare outcome.
 
 It is built using five different dimension of flood vulnerability. The measures are calculated using z-scores, so are relative rather than absolute measures. Scores below zero indicate a worse than average level of vulnerability to flooding. There are options to use the z-score relative to the country, or relative to the UK as a whole.
 
@@ -37,7 +35,7 @@ The NFVI is measured at the [2021 Lower layer Super Output Areas](https://geopor
 
 The latest NFVI was calculated in 2025 based on 2021 UK Census data (when available), and a thorough discussion of the elements is available on the [UK Climate Risk website](https://www.ukclimaterisk.org/wp-content/uploads/2025/07/Sayers-et-al-2025-Climate-Vulnerability-Indicators-1.pdf). The dataset was sourced from the [same place](https://www.ukclimaterisk.org/wp-content/uploads/2024/08/Sayers-ClimateVulnerabilityIndicators_Neighbourhoods-06March2025-Submitted.xlsx).
 
-It is worth noting that the NVFI contains information about whether a neighbourhood has experienced flooding in the past. According to Appendix Table C-46 in the report linked above, this is measured using
+It is worth noting that the NVFI contains information about whether a neighbourhood has experienced flooding in the past. 
 
 > Number of properties within historical flood boundary, based on query of property datasets and flood outlines as available in 2015; limited to past 50 years when date information available. Data updated to link to the 2021 census boundaries (Z-score only due to licence constraints). 
 
@@ -51,7 +49,7 @@ We're interested in several distinct dimensions of flood exposure. In particular
 
 ### Risk of flooding 
 
-The 2024 UK National Flood Risk Assessment ([Nafra](https://www.gov.uk/government/publications/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024)) is the government's regular national flood risk assessmen for England. 
+The 2024 UK National Flood Risk Assessment ([Nafra](https://www.gov.uk/government/publications/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024)) is the government's regular national flood risk assessment for England. 
 
 Data for flood risk is availabe for both rivers and seas, and surface flooding.
 
@@ -67,4 +65,13 @@ Scotland has all flood risk data available on [SEPA's](https://www2.sepa.org.uk/
 
 ### Flood history
 
-This [historic flood map](https://www.data.gov.uk/dataset/76292bec-7d8b-43e8-9c98-02734fd89c81/historic-flood-map1) by EA shows the outlines of the floods they know about.  FP would like to know *when* the flood occurred.
+This [historic flood map](https://www.data.gov.uk/dataset/76292bec-7d8b-43e8-9c98-02734fd89c81/historic-flood-map1) by EA shows the outlines of the floods EA knows about. It is readily available as a shapefile.  FP would like to know *when* the flood occurred.
+
+
+## Next steps
+
+- [] get all the data!
+    - [x] shapefiles for the designated councils
+    - []  flood risk for surface water downloads
+- [] link flood vulnerability to the underlying lsoa shapefiles
+- [] transform each of the three maps into a google layer
