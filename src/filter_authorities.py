@@ -20,8 +20,5 @@ print(filtered_gdf) #just checking it isn't empty
 # Export to shapefile
 output_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/processing/filtered-authorities/filtered-authorities.shp"
 os.makedirs(os.path.dirname(output_path), exist_ok=True)  # <-- This line creates the directory
-
-print(f"Saving to: {output_path}")
-print(f"Filtered rows: {len(filtered_gdf)}")
-
 filtered_gdf.to_file(output_path, driver="ESRI Shapefile")
+

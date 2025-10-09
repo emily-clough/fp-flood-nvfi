@@ -31,7 +31,7 @@ The measure of vulnerability to flooding is the Neighbourhood Flooding Vulnerabi
 
 It is built using five different dimension of flood vulnerability. The measures are calculated using z-scores, so are relative rather than absolute measures. Scores below zero indicate a worse than average level of vulnerability to flooding. There are options to use the z-score relative to the country, or relative to the UK as a whole.
 
-The NFVI is measured at the [2021 Lower layer Super Output Areas](https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-december-2021-boundaries-ew-bsc-v4-2/about) level in England, and [2011 Immediate Zone Boundaries](https://www.nrscotland.gov.uk/publications/2022-census-geography-products/) level in Scotland.
+The NFVI is measured at the [2021 Lower layer Super Output Areas](https://geoportal.statistics.gov.uk/datasets/ons::lower-layer-super-output-areas-december-2021-boundaries-ew-bsc-v4-2/about) level in England, and [2011 Intermediate Zone Boundaries](https://www.data.gov.uk/dataset/133d4983-c57d-4ded-bc59-390c962ea280/intermediate-zone-boundaries-2011) level in Scotland.
 
 The latest NFVI was calculated in 2025 based on 2021 UK Census data (when available), and a thorough discussion of the elements is available on the [UK Climate Risk website](https://www.ukclimaterisk.org/wp-content/uploads/2025/07/Sayers-et-al-2025-Climate-Vulnerability-Indicators-1.pdf). The dataset was sourced from the [same place](https://www.ukclimaterisk.org/wp-content/uploads/2024/08/Sayers-ClimateVulnerabilityIndicators_Neighbourhoods-06March2025-Submitted.xlsx).
 
