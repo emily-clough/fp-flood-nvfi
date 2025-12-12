@@ -4,25 +4,29 @@
 ## Project Goal:
 [Flooded People](https://www.floodedpeople.org.uk) are interested in understanding where people who are particularly vulnerable to the impacts of flooding are most at risk of being flooded, or have experienced flooding in the past.
 
-The project is inspired in part by the work of JRF, University of Manchester and others in building the [Climate Just](https://climatejust.org.uk) resource and website. It appears this was last updated in 2017.
+The project builds on the work of the [Climate Just](https://climatejust.org.uk) resource and website, developed by Joseph Rowntree Foundation and University of Manchester and others.. It appears this was last updated in 2017.
 
-While it would be fun and useful to try to reproduce that analysis on a UK-wide scale, the digital infrastructure for this scale of project is not available at this time. This project will focus on the following geographic areas:
+Flooded People are particularly working on a National Lottery Community Fund project that organises people in key flooded communities in England and Scotland:
 
 - Leicester
 - Hull
 - Birmingham
+- Tower Hamlets
 - Dundee 
 - Glasgow
 
-For these council areas, the project will try to identify neighbourhoods and areas where people who are highly vulnerable to the impacts of flooding *and* have also been flooded in the past or are likely to be flooded in the future. FP are hoping to use this analysis to focus who they speak to as part of their project with the National Lottery.
+For these council areas, the project identifies neighbourhoods and areas where people who are highly vulnerable to the impacts of flooding *and* have also been flooded in the past or are or at risk of flooding in the future. FP are hoping to use this analysis to focus who they speak to as part of their project with the National Lottery.
 
-The analysis will be used by community organisers and campaigners, so it is particularly important that the outputs are accessible and legibile to them. Possible ideas: identifying lists of postcodes, or layering on to GoogleMaps or OpenStreetMaps.
+The analysis will be used by community organisers and campaigners, so it is particularly important that the outputs are accessible and legibile to them. The basic approach is therefore to build a series of KML maps from existing data and feed these into MyMaps in Google. This should allow FP and community organisers to use the maps to observe overall patterns in the communities, as well as an on-the-ground tool for navigating communities through the GoogleMaps app.
+
 
 ## Available Data:
 
 The project examines two broad concepts:
 - vulnerability to the impacts of flooding
 - flood exposure
+
+Data collection is a devolved matter, so data has been processed separately for England and Scotland. I've outlined below where I got the data and how I processed it before uploading to Google Mymaps.
 
 ### Vulnerability to flooding
 The measure of vulnerability to flooding is the Neighbourhood Flooding Vulnerability Index, developed by Sayer and Partners for the UK's Climate Change Committee. The NFVI:
@@ -39,7 +43,15 @@ It is worth noting that the NVFI contains information about whether a neighbourh
 
 > Number of properties within historical flood boundary, based on query of property datasets and flood outlines as available in 2015; limited to past 50 years when date information available. Data updated to link to the 2021 census boundaries (Z-score only due to licence constraints). 
 
-This could be helpful with looking at flood exposure, as below.
+In the maps, I've classified different areas based on the schema provided in the [Climate Just map](https://www.climatejust.org.uk/map.html):
+
+- Acute Vulnerability: NFVI >= 2.5),
+- Extremely High Vulnerability: NFVI >= 1.5 & < 2.5
+- Relatively High Vulnerability: NFVI >= .5 & < 1.5
+- Average Vulnerability: NFVI >= -.5 & < .5
+- Relatively Low Vulnerability: NFVI >= -1.5 & < -.5
+- Extremely Low Vulnerability: NFVI >= -2.5 &  < -1.5)
+- Slight Vulnerability: NFVI <= -2.5)
 
 ### Flood exposure
 
@@ -49,29 +61,47 @@ We're interested in several distinct dimensions of flood exposure. In particular
 
 ### Risk of flooding 
 
-The 2024 UK National Flood Risk Assessment ([Nafra](https://www.gov.uk/government/publications/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024)) is the government's regular national flood risk assessment for England. 
-
-Data for flood risk is availabe for both rivers and seas, and surface flooding.
 
 ##### England
-Flood risks for river and sea flooding are shared on data.gov.uk, through the [Flood Map for Planning - Flood Zones](https://www.data.gov.uk/dataset/104434b0-5263-4c90-9b1e-e43b1d57c750/flood-map-for-planning-flood-zones1) page. For v 0.1 of this project, I'm using geo-json files.
+The 2024 UK National Flood Risk Assessment ([Nafra](https://www.gov.uk/government/publications/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024)) is the government's regular national flood risk assessment for England. 
 
-Flood risks for surface water are published on data.gov.uk, through the [Risk of Flooding from Surface Water (RoFSW)](https://www.data.gov.uk/dataset/0d6fa1f4-0c82-4c91-8667-a549e8e3ca2d/risk-of-flooding-from-surface-water3). You can download the geojson from [here](https://environment.data.gov.uk/explore/b5aaa28d-6eb9-460e-8d6f-43caa71fbe0e?download=true), but it will not allow download of the whole country. I'll need to create a shapefile for the six listed council areas (or perhaps just those in England?) before attempting this again.
+##### Flood risk from river and sea
+Flood risks for river and sea flooding are shared on data.gov.uk, through the [Flood Map for Planning - Flood Zones](https://www.data.gov.uk/dataset/104434b0-5263-4c90-9b1e-e43b1d57c750/flood-map-for-planning-flood-zones1) page. 
+
+Flood from river and seas in England is classsified in three zones. This project concentrates on flood zones 2 & 3.
+- Flood Zone 2: 
+- Flood Zone 3: 
+
+##### Flood risk from surface water (RoSWF)
+Flood risks for surface water files are huge, and thus need to be requested from data.gov.uk, through the [Risk of Flooding from Surface Water (RoFSW)](https://www.data.gov.uk/dataset/0d6fa1f4-0c82-4c91-8667-a549e8e3ca2d/risk-of-flooding-from-surface-water3). 
+
+Flood risk from surface water has the same classification system as flood risk from river and sea.
+
+In order to get the RoSWF files down to a workable size, I've combined surface water flood zones 2&3 on the map. I have also simplified the shapes of the flood zones considerably. These shapes should still give a reasonable sense of where surface water flooding is likely to occur.
 
 
-##### Scotland
+##### Historic flooding
 
-Scotland has all flood risk data available on [SEPA's](https://www2.sepa.org.uk/flooddata/) website. This is all in .gdb data, which seems readily useable by geopandas.
+Historical flooding for England is available from  [Environment Agency]().
 
-### Flood history
-
-This [historic flood map](https://www.data.gov.uk/dataset/76292bec-7d8b-43e8-9c98-02734fd89c81/historic-flood-map1) by EA shows the outlines of the floods EA knows about. It is readily available as a shapefile.  FP would like to know *when* the flood occurred.
+The map only shows historical flooding since 20000. 
 
 
-## Next steps
+#### Scotland
 
-- [] get all the data!
-    - [x] shapefiles for the designated councils
-    - []  flood risk for surface water downloads
-- [] link flood vulnerability to the underlying lsoa shapefiles
-- [] transform each of the three maps into a google layer
+
+##### Flood risk from river and sea
+
+Scotland calculates flood risk from river and seas separately. It also uses slightly different classifications from England and Wales.
+
+
+##### Flood risk from surface water (RoSWF)
+
+##### Historic flooding
+Scotland doesn't make historic flooding data available.
+
+## Approach
+
+Flooded People would like to use these as practical tools for reaching communities on the ground. In order to do this, I'm converting the resulting maps to KML and uploading them to a custom Google Map. In order to keep these files under 5MB, I've created one for England and one for Scotland. That also reflects the fact that the sources for these data are often quite different. This also means FP doesn't need to self-host the maps, which might be a bit of a faff for this project.
+
+Reducing file sizes to 5MB has required some compromises in the presentation of the data, particularly for the surface water flooding data. These compromises can be found in the detail of the 

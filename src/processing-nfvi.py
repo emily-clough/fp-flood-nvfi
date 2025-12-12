@@ -1,172 +1,110 @@
-#this file is to process the NFVI data--pull it in and match it to the relevant LSOA
+import re
 
-
+import geopandas as gpd
 import pandas as pd
-import geopandas
-import simplekml
+import os
 import shapely
 import numpy as np
+from shapely.ops import transform
 
-
-from shapely.ops import unary_union, polygonize
-from shapely.geometry import Polygon, MultiPolygon
-
-
-#extracting the relevant sheet from nvfi file
 
 inpath = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/raw/Sayers-ClimateVulnerabilityIndicators_Neighbourhoods-06March2025-Submitted.xlsx"
-
 df = pd.read_excel(inpath, sheet_name="Indices - Integrated", skiprows=5, usecols='C, E, I', engine = "openpyxl" )
-
 df.columns = ['zone_code', 'nfvi-national', 'nfvi-uk']
-print(df.columns)
 
-#pulling in LSOA geojson
-lsoa_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/raw/LSOA_Dec_2001_EW_BFC_2022_1969373978000391918.geojson"
-lsoa = geopandas.read_file(lsoa_path)
 
+def clip_authorities(authort, code_var, name_var, nfvi, zones):
+    pattern = r"|".join(fr"\b{re.escape(x)}\b" for x in authort)
+
+    # boolean mask (case-insensitive). na=False avoids matching NaNs.
+    mask = zones[name_var].astype(str).str.contains(pattern, case=False, na=False)
+
+    # filtered GeoDataFrame
+    zones = zones[mask].copy()
+
+    zones = zones.rename(columns={code_var: "zone_code"})
+    zones = zones.to_crs(epsg=4326)
+
+    gbnfvi = zones.merge(nfvi, on='zone_code', how='left')
+    gbnfvi = gbnfvi[["geometry", "nfvi-uk"]]
+    #makes the geometries simpler for sending out kml
+    #rounding coordinates 
+    gbnfvi["geometry"] = gbnfvi.geometry.apply(lambda g: transform(lambda x, y, z=None: (np.round(x, 5), np.round(y, 5)), g) if g is not None else g)
+    gbnfvi.dropna(inplace=True)
+
+    gbnfvi["geometry"] = gbnfvi.simplify(tolerance=.00001, preserve_topology=True)
+
+    conditions = [
+        gbnfvi["nfvi-uk"].notna() & (gbnfvi["nfvi-uk"] >= 2.5),
+        gbnfvi["nfvi-uk"].notna() & (gbnfvi["nfvi-uk"] >= 1.5) & (gbnfvi["nfvi-uk"] < 2.5),
+        gbnfvi["nfvi-uk"].notna() & (gbnfvi["nfvi-uk"] >= .5) & (gbnfvi["nfvi-uk"] < 1.5),
+        gbnfvi["nfvi-uk"].notna() & (gbnfvi["nfvi-uk"] >= -.5) & (gbnfvi["nfvi-uk"] < .5),
+        gbnfvi["nfvi-uk"].notna() & (gbnfvi["nfvi-uk"] >= -1.5) & (gbnfvi["nfvi-uk"] < -.5),
+        gbnfvi["nfvi-uk"].notna() & (gbnfvi["nfvi-uk"] >= -2.5) & (gbnfvi["nfvi-uk"] < -1.5),
+        gbnfvi["nfvi-uk"].notna() & (gbnfvi["nfvi-uk"] <= -2.5), 
+
+    ]
+    labels = ["Acute Vulnerability", "Extremely High Vulnerability", "Relatively High Vulnerability", "Average Vulnerability",  "Relatively Low Vulnerability", "Extremely Low Vulnerability", "Slight Vulnerability"]
+    gbnfvi["category"] = np.select(conditions, labels, default=pd.NA)
+
+    return gbnfvi
+
+
+
+
+##English
+lsoa_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/raw/Lower_layer_Super_Output_Areas_December_2021_Boundaries_EW_BFC_V10_-3788374532542394575.geojson"
+lsoa = gpd.read_file(lsoa_path)
+
+english_authorities = ["Kingston upon Hull", "Leicester", "Birmingham", "Tower Hamlets"]
+
+eng_nfvi = clip_authorities(english_authorities,"LSOA21CD", "LSOA21NM", df, lsoa)
+
+eng_vuln = eng_nfvi[eng_nfvi["nfvi-uk"]>=.5]
+eng_lessvuln = eng_nfvi[eng_nfvi["nfvi-uk"]<.5]
+
+ev_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/england/eng-vuln.kml"
+eng_vuln.to_file(ev_path, driver="KML", index=False)
+
+elv_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/england/eng-lessvuln.kml"
+eng_lessvuln.to_file(elv_path, driver="KML", index=False)
+
+
+
+nfvie_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/processing/nfvi-eng/nfvi-eng.shp"
+os.makedirs(os.path.dirname(nfvie_path), exist_ok=True)  # <-- This line creates the directory
+eng_vuln.to_file(nfvie_path, driver="ESRI Shapefile")
+
+##scottish
 inter_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/raw/SG_IntermediateZoneBdry_2011/SG_IntermediateZone_Bdry_2011.shp"
-inter = geopandas.read_file(inter_path)
+inter = gpd.read_file(inter_path)
 
-#reprojecting scottish data to english CRS
-inter = inter.to_crs(lsoa.crs)
+inter = inter.to_crs(4326)
 
-inter = inter.rename(columns={"InterZone": "zone_code", "Name": "zone_name"})
-lsoa = lsoa.rename(columns={"LSOA01CD": "zone_code", "LSOA01NM": "zone_name"})
-
-inter["nation"] = "Scotland"
-lsoa["nation"] = "England"
-
-scot_eng = geopandas.GeoDataFrame(
-    pd.concat([inter, lsoa], ignore_index=True),
-    crs=lsoa.crs
-)
-
-gb = scot_eng[["zone_code", "geometry", "nation"]]
-#print(scot_eng.columns)
-
-gbnfvi = gb.merge(df, on='zone_code', how='left')
-
-#trying to clean up so that the geometry works for kml export
-gbnfvi["geometry"] = gbnfvi.buffer(0)
-gbnfvi = gbnfvi.explode(index_parts=False, ignore_index=True)
-
-
-#pulling out the vulnerable bits
-gb_vuln =  gbnfvi[gbnfvi["nfvi-uk"] < -.15] #should be .27, changing in order to test--at .27 the file is too big
-gb_vuln = gb_vuln[["geometry", "nfvi-uk"]]
-
-print(gb_vuln['nfvi-uk'].quantile([0.25, 0.5, 0.75,1]))
-#.25: -1.035, .5: -.609, .75: -.273, 1: 0
-
-
-
-#gb_vuln.plot(figsize=(8,8))
-#gb.plot(figsize=(8,8))
-
+##for scotland, we first need to make the list of relevant intermediate zones from the clipped authorities, because scotland doesn't have authority names in the data file
 clip_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/processing/filtered-authorities/filtered-authorities.shp"
-clip = geopandas.read_file(clip_path)
+local_authorities = gpd.read_file(clip_path)
 
-##GPT defined functions for cleaning and clipping these geographies
-def report_geoms(gdf, name="gdf"):
-    print(f"--- {name} ---")
-    print("rows:", len(gdf))
-    print("null geometries:", int(gdf.geometry.isnull().sum()))
-    print("empty geometries:", int(gdf.geometry.is_empty.sum()))
-    print("invalid geometries:", int((~gdf.geometry.is_valid).sum()))
-    print("geom types:\n", gdf.geometry.geom_type.value_counts())
+#trying to take out the bitsy bits
+clipped_authorities = gpd.clip(inter, local_authorities)
+clipped_authorities = clipped_authorities.to_crs(epsg=27700)
+clipped_authorities = clipped_authorities[clipped_authorities.area > 8000]
 
-def clean_and_clip(gdf, mask, keep_geom_type=True, min_area=1e-9):
-    # 1) Keep original indices so we can debug drops
-    gdf = gdf.copy()
-    gdf["_orig_index"] = gdf.index
+scot_codes = clipped_authorities["InterZone"]
+scot_codes = scot_codes.drop_duplicates()
 
-    # 2) Ensure both use the same CRS
-    if gdf.crs != mask.crs:
-        mask = mask.to_crs(gdf.crs)
+scot_nfvi = clip_authorities(scot_codes,"InterZone", "InterZone", df, inter)
 
-    # 3) Clip using geopandas.clip
-    clipped = geopandas.clip(gdf, mask, keep_geom_type=keep_geom_type)
+scot_vuln = scot_nfvi[scot_nfvi["nfvi-uk"]>=.5]
+scot_lessvuln = scot_nfvi[scot_nfvi["nfvi-uk"]<.5]
 
-    report_geoms(gdf, "original")
-    report_geoms(clipped, "after clip")
+sv_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/scotland/scot-vuln.kml"
+scot_vuln.to_file(sv_path, driver="KML", index=False)
 
-    # 4) Remove explicit null/empty geometries
-    clipped = clipped[clipped.geometry.notna()].copy()
-    clipped = clipped[~clipped.geometry.is_empty].copy()
-
-    # 5) Try to repair invalid geometries
-    # prefer shapely.make_valid if available (Shapely >= 1.8/2.0), fallback to buffer(0)
-    try:
-        # shapely >= 2.0 style
-        from shapely.validation import make_valid as shapely_make_valid
-        clipped['geometry'] = clipped.geometry.apply(lambda g: shapely_make_valid(g) if g is not None else g)
-    except Exception:
-        try:
-            # older shapely or fallback: buffer(0) often fixes self-intersections
-            clipped['geometry'] = clipped.geometry.buffer(0)
-        except Exception:
-            # last resort: leave as-is but warn
-            print("Warning: couldn't run make_valid or buffer(0) to fix geometries")
-
-    # 6) Explode multiparts into singleparts (keeps attributes)
-    # use index_parts=False to avoid hierarchical index (geopandas >= 0.11)
-    clipped = clipped.explode(index_parts=False).reset_index(drop=True)
-
-    # 7) Remove tiny or zero-area geometries created by numeric precision issues
-    clipped['__area__'] = clipped.geometry.area
-    clipped = clipped[clipped['__area__'] > min_area].copy()
-    clipped = clipped.drop(columns='__area__')
-
-    # ensure geometry column is set and GeoDataFrame class is preserved
-    if 'geometry' not in clipped.columns:
-        # try to find a geometry-like column
-        geom_cols = [c for c in clipped.columns if clipped[c].dtype.name == 'geometry' or clipped[c].apply(lambda x: hasattr(x, 'geom_type')).any()]
-        if geom_cols:
-            clipped = clipped.set_geometry(geom_cols[0])
-        else:
-            raise RuntimeError("No geometry column found after cleaning")
-
-    clipped = geopandas.GeoDataFrame(clipped, geometry='geometry', crs=gdf.crs)
-
-    report_geoms(clipped, "after cleaning")
-    return clipped
-
-clip_nfvi = clean_and_clip(gb_vuln, clip)
-
-#trying to categorise before sending to kml
-bins = [float('-inf'), -1, -.6, float('inf')]
-labels = ["Vulnerable", "Very Vulnerable", "Most vulnerable"]
-
-clip_nfvi["category"] = pd.cut(clip_nfvi["nfvi-uk"], bins=bins, labels=labels)
-
-color_map = {
-    "Most Vulnerable": "7F0000FF",     # dark red, semi-transparent
-    "Very Vulnerable": "4C0000FF", # medium red, more transparent
-    "Vulnerable": "1A0000FF"      # light red, very transparent
-}
-
-kml = simplekml.Kml()
-
-for _, row in clip_nfvi.iterrows():
-    geom = row.geometry
-    cat = row["category"]
-    #color = color_map[cat]
-
-    if geom.geom_type == "Polygon":
-        pol = kml.newpolygon(name=cat)
-        pol.outerboundaryis = list(geom.exterior.coords)
-        #pol.style.polystyle.color = color
-        pol.style.linestyle.color = "FF000000"  # black outline
-        pol.style.linestyle.width = 1
-    elif geom.geom_type == "MultiPolygon":
-        for part in geom:
-            pol = kml.newpolygon(name=cat)
-            pol.outerboundaryis = list(part.exterior.coords)
-            #pol.style.polystyle.color = color
-            pol.style.linestyle.color = "FF000000"
-            pol.style.linestyle.width = 1
+slv_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/scotland/scot-lessvuln.kml"
+scot_lessvuln.to_file(slv_path, driver="KML", index=False)
 
 
-
-kml.save("/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/flood_vulnerability.kml")
+nfvis_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/processing/nfvi-scot/nfvi-scot.shp"
+os.makedirs(os.path.dirname(nfvis_path), exist_ok=True)  # <-- This line creates the directory
+scot_vuln.to_file(nfvis_path, driver="ESRI Shapefile")
