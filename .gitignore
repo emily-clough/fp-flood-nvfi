@@ -35,3 +35,7 @@ src/flood_vulnerability.kml
 src/flood_vulnerability.kml
 
 src/debug.ipynb
+
+# Large files
+repo-backup.bundle
+*.bundle
