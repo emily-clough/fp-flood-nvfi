@@ -20,13 +20,14 @@ scot_sea_h = gpd.read_file(sea_flood_path, layer='FRM_FH_COASTAL_EXTENT_H')
 clip_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/processing/filtered-authorities/filtered-authorities.shp"
 local_authorities = gpd.read_file(clip_path)
 
+#putting it all together so that it mirrors english flood data
+scot_river_sea_h = pd.concat([scot_river_h, scot_sea_h], ignore_index=True)
+scot_river_sea_m = pd.concat([scot_sea_m, scot_river_m], ignore_index=True)
+
 
 scot_river_sea_h = scot_river_sea_h.to_crs(27700)
 scot_river_sea_m = scot_river_sea_m.to_crs(27700)
 local_authorities = local_authorities.to_crs(27700)
-#putting it all together so that it mirrors english flood data
-scot_river_sea_h = pd.concat([scot_river_h, scot_sea_h], ignore_index=True)
-scot_river_sea_m = pd.concat([scot_sea_m, scot_river_m], ignore_index=True)
 
 scot_river_sea_h= scot_river_sea_h[["PROB", "geometry"]]
 scot_river_sea_m= scot_river_sea_m[["PROB", "geometry"]]
@@ -55,7 +56,7 @@ local_scot_riversea.to_file(output_path, driver="ESRI Shapefile")
 
 local_scot_riversea = local_scot_riversea.to_crs(27700)
 
-local_scot_riversea["geometry"] = local_scot_riversea.simplify(tolerance=4, preserve_topology=True)
+local_scot_riversea["geometry"] = local_scot_riversea.simplify(tolerance=3.5, preserve_topology=True)
 local_scot_riversea.geometry = local_scot_riversea.buffer(0)
 
 

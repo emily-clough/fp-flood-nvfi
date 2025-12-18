@@ -45,8 +45,7 @@ def clip_authorities(authort, code_var, name_var, nfvi, zones):
 
     ]
     labels = ["Acute Vulnerability", "Extremely High Vulnerability", "Relatively High Vulnerability", "Average Vulnerability",  "Relatively Low Vulnerability", "Extremely Low Vulnerability", "Slight Vulnerability"]
-    gbnfvi["category"] = np.select(conditions, labels, default=pd.NA)
-
+    gbnfvi["Name"] = np.select(conditions, labels, default=pd.NA)
     return gbnfvi
 
 
@@ -59,7 +58,7 @@ lsoa = gpd.read_file(lsoa_path)
 english_authorities = ["Kingston upon Hull", "Leicester", "Birmingham", "Tower Hamlets"]
 
 eng_nfvi = clip_authorities(english_authorities,"LSOA21CD", "LSOA21NM", df, lsoa)
-
+print(eng_nfvi.head())
 eng_vuln = eng_nfvi[eng_nfvi["nfvi-uk"]>=.5]
 eng_lessvuln = eng_nfvi[eng_nfvi["nfvi-uk"]<.5]
 

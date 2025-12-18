@@ -74,11 +74,7 @@ def process_roswf(surface, local_authorities):
 
     # connecting adjacent polygons by buffering out and back in
     surface_local = surface_local.to_crs(epsg=27700)
-    # surface_local = surface_local[surface_local.geometry.area > 200]
     surface_local.geometry = surface_local.buffer(1)  
-    # surface_local = surface_local.dissolve()
-    # surface_local = surface_local.explode(index_parts=False).reset_index(drop=True)
-    # surface_local = surface_local[surface_local.geometry.area > 100]
     surface_local = surface_local.dissolve()
     surface_local = surface_local[surface_local.is_valid]
     surface_local = surface_local[~surface_local.is_empty]
@@ -104,28 +100,28 @@ def process_roswf(surface, local_authorities):
 birm_roswf = process_roswf(birmingham_surface, local_authorities)
 print(birm_roswf.head())
 #for the rest of the authorities, the simplification tolerance can be set to 5m
-# leic_roswf = process_roswf(leicester_surface, local_authorities)
-# print(leic_roswf.head())
-# hull_roswf = process_roswf(hull_surface, local_authorities)
-# print(hull_roswf.head())  
-# th_roswf = process_roswf(towerhamlets_surface, local_authorities)
-# print(th_roswf.head())
+leic_roswf = process_roswf(leicester_surface, local_authorities)
+print(leic_roswf.head())
+hull_roswf = process_roswf(hull_surface, local_authorities)
+print(hull_roswf.head())  
+th_roswf = process_roswf(towerhamlets_surface, local_authorities)
+print(th_roswf.head())
 
 birm_roswf_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/england/roswf/birm_roswf.kml"
 os.makedirs(os.path.dirname(birm_roswf_path), exist_ok=True)  # <-- This line creates the directory
 birm_roswf.to_file(birm_roswf_path, driver="kml")
 
 
-# leic_roswf_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/england/roswf/leic_roswf.kml"
-# os.makedirs(os.path.dirname(leic_roswf_path), exist_ok=True)  # <-- This line creates the directory
-# leic_roswf.to_file(leic_roswf_path, driver="kml")
+leic_roswf_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/england/roswf/leic_roswf.kml"
+os.makedirs(os.path.dirname(leic_roswf_path), exist_ok=True)  # <-- This line creates the directory
+leic_roswf.to_file(leic_roswf_path, driver="kml")
 
 
-# hull_roswf_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/england/roswf/hull_roswf.kml"
-# os.makedirs(os.path.dirname(hull_roswf_path), exist_ok=True)  # <-- This line creates the directory
-# hull_roswf.to_file(hull_roswf_path, driver="kml")
+hull_roswf_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/england/roswf/hull_roswf.kml"
+os.makedirs(os.path.dirname(hull_roswf_path), exist_ok=True)  # <-- This line creates the directory
+hull_roswf.to_file(hull_roswf_path, driver="kml")
 
-# th_roswf_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/england/roswf/th_roswf.kml"
-# os.makedirs(os.path.dirname(th_roswf_path), exist_ok=True)  # <-- This line creates the directory
-# th_roswf.to_file(th_roswf_path, driver="kml")
+th_roswf_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/clean/england/roswf/th_roswf.kml"
+os.makedirs(os.path.dirname(th_roswf_path), exist_ok=True)  # <-- This line creates the directory
+th_roswf.to_file(th_roswf_path, driver="kml")
 

@@ -38,6 +38,7 @@ local_floodzones = flood_by_id[["flood_zone", "geometry"]]
 # local_floodzones = local_floodzones.dissolve(by="flood_zone")
 #committing to shapefile before simplification to avoid topology errors
 
+local_floodzones = local_floodzones.to_crs(epsg=4326)
 output_path = "/Users/eclough_98/flooded-people/fp-flood-nvfi/data/processing/filtered-fz/filtered-fz.shp"
 os.makedirs(os.path.dirname(output_path), exist_ok=True)  # <-- This line creates the directory
 local_floodzones.to_file(output_path, driver="ESRI Shapefile")

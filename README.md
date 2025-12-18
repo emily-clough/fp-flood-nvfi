@@ -39,19 +39,15 @@ The NFVI is measured at the [2021 Lower layer Super Output Areas](https://geopor
 
 The latest NFVI was calculated in 2025 based on 2021 UK Census data (when available), and a thorough discussion of the elements is available on the [UK Climate Risk website](https://www.ukclimaterisk.org/wp-content/uploads/2025/07/Sayers-et-al-2025-Climate-Vulnerability-Indicators-1.pdf). The dataset was sourced from the [same place](https://www.ukclimaterisk.org/wp-content/uploads/2024/08/Sayers-ClimateVulnerabilityIndicators_Neighbourhoods-06March2025-Submitted.xlsx).
 
-It is worth noting that the NVFI contains information about whether a neighbourhood has experienced flooding in the past. 
-
-> Number of properties within historical flood boundary, based on query of property datasets and flood outlines as available in 2015; limited to past 50 years when date information available. Data updated to link to the 2021 census boundaries (Z-score only due to licence constraints). 
-
 In the maps, I've classified different areas based on the schema provided in the [Climate Just map](https://www.climatejust.org.uk/map.html):
 
-- Acute Vulnerability: NFVI >= 2.5),
+- Acute Vulnerability: NFVI >= 2.5
 - Extremely High Vulnerability: NFVI >= 1.5 & < 2.5
 - Relatively High Vulnerability: NFVI >= .5 & < 1.5
 - Average Vulnerability: NFVI >= -.5 & < .5
 - Relatively Low Vulnerability: NFVI >= -1.5 & < -.5
-- Extremely Low Vulnerability: NFVI >= -2.5 &  < -1.5)
-- Slight Vulnerability: NFVI <= -2.5)
+- Extremely Low Vulnerability: NFVI >= -2.5 &  < -1.5
+- Slight Vulnerability: NFVI <= -2.5
 
 ### Flood exposure
 
@@ -60,7 +56,6 @@ We're interested in several distinct dimensions of flood exposure. In particular
 - whether a community/neighbourhood has been flooded in the past
 
 ### Risk of flooding 
-
 
 ##### England
 The 2024 UK National Flood Risk Assessment ([Nafra](https://www.gov.uk/government/publications/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024)) is the government's regular national flood risk assessment for England. 
@@ -79,27 +74,29 @@ Flood risk from surface water has the same classification system as flood risk f
 
 In order to get the RoSWF files down to a workable size, I've combined surface water flood zones 2&3 on the map. I have also simplified the shapes of the flood zones considerably. These shapes should still give a reasonable sense of where surface water flooding is likely to occur.
 
-
 ##### Historic flooding
 
 Historical flooding for England is available from  [Environment Agency]().
 
-The map only shows historical flooding since 20000. 
+The map only shows historical flooding since 2000. 
 
 
 #### Scotland
-
+Flood data collection is a devolved power, and Scotland collects its flood data in slight different ways to 
 
 ##### Flood risk from river and sea
 
-Scotland calculates flood risk from river and seas separately. Scottish flood data can be found [here](https://www2.sepa.org.uk/flooddata/).
+Unlike England and Wales, Scotland calculates flood risk from river and seas separately. Scottish flood data can be found [here](https://www2.sepa.org.uk/flooddata/). For this project, I've merged the river and sea flooding so that it is easier to relate to the England and Wales data.
 
-Flood risk in Scotland 
+Flood risk in Scotland is classified in two levels:
 
 - High likelihood: A flood event is likely on average in the defined area once in every ten years (1:10). Or a 10% chance of happening in any one year.
-- Medium likelihood: A flood event is likely in the defined area on average once in every two hundred years (1:200). Or a 0.5% chance of happening in
-any one year
+- Medium likelihood: A flood event is likely in the defined area on average once in every two hundred years (1:200). Or a 0.5% chance of happening in any one year
+
 ##### Flood risk from surface water (RoSWF)
+
+Risk of flooding from surface water in Scotland is classified in the same way as flood risk from rivers and seas. For practical reasons, the high and medium risk areas have been merged in the map.
+
 
 ##### Historic flooding
 Scotland doesn't make historic flooding data available.
@@ -110,7 +107,7 @@ Flooded People would like to use these as practical tools for reaching communiti
 
 Reducing file sizes to 5MB has required some compromises in the presentation of the data, particularly for the surface water flooding data. These compromises can be found in the detail of the code. The maps produced here should not be used for in-depth analysis.
 
-### Identifying first steps
+### Identifying those most vulnerable and most at risk
 
 The multiple layers in the map provide some rich context, but they make it challenging to identify the most vulnerable communities where people are also the most at risk of flooding. I've created a further layer to reflect the categories that reflect these. These categories are defined as follows:
 
