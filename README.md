@@ -69,8 +69,8 @@ The 2024 UK National Flood Risk Assessment ([Nafra](https://www.gov.uk/governmen
 Flood risks for river and sea flooding are shared on data.gov.uk, through the [Flood Map for Planning - Flood Zones](https://www.data.gov.uk/dataset/104434b0-5263-4c90-9b1e-e43b1d57c750/flood-map-for-planning-flood-zones1) page. 
 
 Flood from river and seas in England is classsified in three zones. This project concentrates on flood zones 2 & 3.
-- Flood Zone 2: 
-- Flood Zone 3: 
+- Flood Zone 2: Land having between a 1% and 0.1% annual probability of river flooding; or land having between a 0.5% and 0.1% annual probability of sea flooding.
+- Flood Zone 3: Land having a 1% or greater annual probability of river flooding; or Land having a 0.5% or greater annual probability of sea
 
 ##### Flood risk from surface water (RoSWF)
 Flood risks for surface water files are huge, and thus need to be requested from data.gov.uk, through the [Risk of Flooding from Surface Water (RoFSW)](https://www.data.gov.uk/dataset/0d6fa1f4-0c82-4c91-8667-a549e8e3ca2d/risk-of-flooding-from-surface-water3). 
@@ -92,9 +92,13 @@ The map only shows historical flooding since 20000.
 
 ##### Flood risk from river and sea
 
-Scotland calculates flood risk from river and seas separately. It also uses slightly different classifications from England and Wales.
+Scotland calculates flood risk from river and seas separately. Scottish flood data can be found [here](https://www2.sepa.org.uk/flooddata/).
 
+Flood risk in Scotland 
 
+- High likelihood: A flood event is likely on average in the defined area once in every ten years (1:10). Or a 10% chance of happening in any one year.
+- Medium likelihood: A flood event is likely in the defined area on average once in every two hundred years (1:200). Or a 0.5% chance of happening in
+any one year
 ##### Flood risk from surface water (RoSWF)
 
 ##### Historic flooding
@@ -104,4 +108,14 @@ Scotland doesn't make historic flooding data available.
 
 Flooded People would like to use these as practical tools for reaching communities on the ground. In order to do this, I'm converting the resulting maps to KML and uploading them to a custom Google Map. In order to keep these files under 5MB, I've created one for England and one for Scotland. That also reflects the fact that the sources for these data are often quite different. This also means FP doesn't need to self-host the maps, which might be a bit of a faff for this project.
 
-Reducing file sizes to 5MB has required some compromises in the presentation of the data, particularly for the surface water flooding data. These compromises can be found in the detail of the 
+Reducing file sizes to 5MB has required some compromises in the presentation of the data, particularly for the surface water flooding data. These compromises can be found in the detail of the code. The maps produced here should not be used for in-depth analysis.
+
+### Identifying first steps
+
+The multiple layers in the map provide some rich context, but they make it challenging to identify the most vulnerable communities where people are also the most at risk of flooding. I've created a further layer to reflect the categories that reflect these. These categories are defined as follows:
+
+- Stage 1: Extremely and Very Flood Vulnerable People in High Risk Floodzones
+- Stage 2: Relatively High Flood Vulnerable People in High Risk Floodzones *and* Extremely and Very Flood Vulnerable People in Medium Risk Floodzones
+- Stage 3: Relatively High Flood Vulnerable People in Medium Risk Floodzones
+
+
