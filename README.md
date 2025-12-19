@@ -111,8 +111,8 @@ Reducing file sizes to 5MB has required some compromises in the presentation of 
 
 The multiple layers in the map provide some rich context, but they make it challenging to identify the most vulnerable communities where people are also the most at risk of flooding. I've created a further layer to reflect the categories that reflect these. These categories are defined as follows:
 
-- Stage 1: Extremely and Very Flood Vulnerable People in High Risk Floodzones
-- Stage 2: Relatively High Flood Vulnerable People in High Risk Floodzones *and* Extremely and Very Flood Vulnerable People in Medium Risk Floodzones
-- Stage 3: Relatively High Flood Vulnerable People in Medium Risk Floodzones
+- Level 1: Extremely and Very Flood Vulnerable People in High Risk Floodzones
+- Level 2: Relatively High Flood Vulnerable People in High Risk Floodzones *and* Extremely and Very Flood Vulnerable People in Medium Risk Floodzones
+- Level 3: Relatively High Flood Vulnerable People in Medium Risk Floodzones
 
 
